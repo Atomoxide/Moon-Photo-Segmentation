@@ -19,13 +19,13 @@ tensorboard = tf.keras.callbacks.TensorBoard(
     embeddings_metadata=None, embeddings_data=None, update_freq=500
 )
 
-# 生成检查点，可以每一轮保存一次参数， 不用训练完再保存
+# one check point per epoch
 checkpoint = tf.keras.callbacks.ModelCheckpoint(weight_path+'fcn_20191021.ckpt',monitor='loss', 
                                                     save_weights_only=True,verbose=1,
                                                     save_best_only=True,save_freq='epoch',mode = 'min')
                                                     
 
-# 生成训练数据集
+# create training set
 train_list_dir = os.listdir(train_dir)
 train_dataset = tf.data.Dataset.from_generator(
     train_generator, (tf.float32,tf.float32), (tf.TensorShape([None, None, None]),tf.TensorShape([None, None, None])))
