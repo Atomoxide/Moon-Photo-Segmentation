@@ -48,10 +48,26 @@ def handle_data(train_filenames, train_label_filenames=None):
         gt_image = scipy.misc.imresize(
             scipy.misc.imread(train_label_filenames), image_shape)
 
+        # In case some color degrade or demolition
+        gt_image = np.where(gt_image!=0,255,gt_image)
+        
+        #Define four labels
         background_color = np.array([255, 0, 0])
+        ground_color = np.array([0,0,0])
+        big_rock_color = np.array([0,0,255])
+        small_rock_color = np.array([0,255,0])
+
         gt_bg = np.all(gt_image == background_color, axis=2)
+        gt_g = np.all(gt_image == ground_color, axis=2)
+        gt_br = np.all(gt_image == big_rock_color, axis=2)
+        gt_sr = np.all(gt_image == small_rock_color, axis=2)
+
         gt_bg = gt_bg.reshape(*gt_bg.shape, 1)
-        gt_image = np.concatenate((gt_bg, np.invert(gt_bg)), axis=2)
+        gt_g = gt_bg.reshape(*gt_g.shape, 1)
+        gt_br = gt_bg.reshape(*gt_br.shape, 1)
+        gt_sr = gt_bg.reshape(*gt_sr.shape, 1)
+
+        gt_image = np.concatenate((gt_bg, gt_g, gt_br,gt_sr), axis=2)
     
         return np.array(image), gt_image
     else:

@@ -11,11 +11,12 @@ from dataload import test_generator
 from deeplab import DeepLabV3Plus
 
 
-COLORMAP = [[0, 0, 255], [0, 255, 0]]
+# COLORMAP = [[0, 0, 255], [0, 255, 0]]
+COLORMAP = [[255, 0, 0], [0, 0, 0],[0,0,255],[0,255,0]] #The former is the background, the latter is the things other than background
 cm = np.array(COLORMAP).astype(np.uint8)
 
 def addweight(pred, test_img):
-    # 标签添加透明通道，叠加在原图上
+    # add transparent channel on the original picture
     pred = Image.fromarray(pred.astype('uint8')).convert('RGBA')
 
     test_img = test_img[0]
@@ -30,10 +31,10 @@ def addweight(pred, test_img):
 
 def write_pred(image, pred, x_names):
     
-    pred = pred[0]  # pred维度为[h, w, n_class]
+    pred = pred[0]  # pred's dim:[h, w, n_class]
     x_name = x_names[0]
-    pred = np.argmax(pred, axis=2)  # 获取通道的最大值的指数，比如模型输出某点的像素值为[0.1,0.5]，则该点的argmax为1.
-    pred = cm[pred]  # 将预测结果的像素值改为cm定义的值，这是语义分割常用方法。这一步是为了将上一步的1转换为cm的第二个值，即[0,255,0]
+    pred = np.argmax(pred, axis=2)  # get the largest number of the channel
+    pred = cm[pred]  # convert the pixel value to color map
 
     weighted_pred = addweight(pred, image) 
     
@@ -59,8 +60,8 @@ test_dataset = tf.data.Dataset.from_generator(
     test_generator, tf.float32, tf.TensorShape([None, None, None]))
 test_dataset = test_dataset.batch(5)
 
-model = DeepLabV3Plus(image_shape[0], image_shape[1], nclasses=3)
-# model = MyModel(2)
+model = DeepLabV3Plus(image_shape[0], image_shape[1], nclasses=4)
+#model = MyModel(2)
 model.load_weights(weight_path+'fcn_20191021.ckpt')
 
 test_list_dir = os.listdir(test_dir)
@@ -69,7 +70,7 @@ test_filenames = [test_dir + filename for filename in test_list_dir]
 
 for filename in test_filenames:
   image = scipy.misc.imresize(
-      scipy.misc.imread(filename), image_shape)  # image的维度为[h, w, channel], 下一步将其转换为[batch, h, w, channel]作为模型的输入, 这里batch=1。
+      scipy.misc.imread(filename), image_shape)  # image dim=[h, w, channel]
   image = image[np.newaxis, :, :, :].astype("float32")
-  out = model.predict(image)  # out的维度为[batch, h, w, n_class]
+  out = model.predict(image)  # out-dim =[batch, h, w, n_class]
   write_pred(image, out, filename)

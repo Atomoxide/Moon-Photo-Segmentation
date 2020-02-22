@@ -33,8 +33,8 @@ train_dataset = tf.data.Dataset.from_generator(
 train_dataset = train_dataset.shuffle(buffer_size=len(train_list_dir))
 train_dataset = train_dataset.batch(batch_size)
 
-#model = DeepLabV3Plus(image_shape[0], image_shape[1], nclasses=2)
-model = MyModel(2)
+model = DeepLabV3Plus(image_shape[0], image_shape[1], nclasses=4)
+#model = MyModel(2)
 # model.load_weights(weight_path+'fcn_20191021')
 
 optimizer = tf.keras.optimizers.SGD(learning_rate=learning_rate, decay=0.0001)

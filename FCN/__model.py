@@ -46,7 +46,7 @@ class MyModel(tf.keras.Model):
       return x
 
     def load_vgg(self):
-        # 加载vgg16模型，其中注意input_tensor，include_top
+        # add vgg16，pay attention to input_tensor，include_top
         vgg16_model = tf.keras.applications.vgg16.VGG16(
             weights='imagenet', include_top=False, input_tensor=Input(shape=(image_shape[0], image_shape[1], 3)))
         for layer in vgg16_model.layers[:15]:

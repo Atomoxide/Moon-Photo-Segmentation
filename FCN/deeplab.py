@@ -61,7 +61,7 @@ def ASPP(tensor):
     return y
 
 
-def DeepLabV3Plus(img_height, img_width, nclasses=2):
+def DeepLabV3Plus(img_height, img_width, nclasses=4):
     print('*** Building DeepLabv3Plus Network ***')
 
     base_model = ResNet50(input_shape=(
