@@ -6,7 +6,7 @@ Cite and modified from https://github.com/fengshilin/tf2.0-FCN.git
 python train.py
 
 # Test Run
-python test
+python test.py
 
 # Data directory structure
 Must follow the defined folder structure
