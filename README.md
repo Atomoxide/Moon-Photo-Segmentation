@@ -13,4 +13,4 @@ https://github.com/allanzelener/YAD2K
 generate yolo.h5 with yolo.weights and yolo.cfg before loading model
 
 ## FCN and Deeplab
-check FCN/readme.md
+check fcn and deeplab directory
