@@ -99,7 +99,18 @@ class MyModel(tf.keras.Model):
       return x
 
     def load_vgg(self):
-        # 加载vgg16模型，其中注意input_tensor，include_top
+#        VGG16_weight = "../vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5"
+#        vgg16_model = tf.keras.applications.vgg16.VGG16(weights="../vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5", include_top=False, input_tensor=Input(shape=(image_shape[0], image_shape[1], 3)))
+
+        #last_layer = VGG16.output
+        
+       # set_trainable = False
+#        for layer in vgg16_model.layers:
+#            if layer.name in ['block1_conv1']:
+#                set_trainable = True
+#            if layer.name in ['block1_pool','block2_pool','block3_pool','block4_pool','block5_pool']:
+#                layer.trainable = False
+       
         vgg16_model = tf.keras.applications.vgg16.VGG16(weights='imagenet', include_top=False, input_tensor=Input(shape=(image_shape[0], image_shape[1], 3)))
         for layer in vgg16_model.layers[:18]:
           layer.trainable = False
