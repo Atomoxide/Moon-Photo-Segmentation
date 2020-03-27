@@ -14,3 +14,5 @@ generate yolo.h5 with yolo.weights and yolo.cfg before loading model
 
 ## FCN and Deeplab
 check fcn and deeplab directory
+change basic hyper-parameter in config.py
+to run learning process, type: python train.py
